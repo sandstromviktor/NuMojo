@@ -28,14 +28,12 @@ jobs:
         run: |
           curl -s https://get.modular.com | sh -
 
-      - name: Install Mojo
+      - name: Set path Mojo
         run: |
           modular install mojo
+          echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
+          echo "/home/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
 
-          # Put Mojo on the PATH
-          echo "MODULAR_HOME=$HOME/.modular" >> $GITHUB_ENV
-          echo "$HOME/.modular/pkg/packages.modular.com_nightly_mojo/bin" >> $GITHUB_PATH
-      
       - name: Install pre-commit
         run: |
           pip install pre-commit
