@@ -35,10 +35,15 @@ jobs:
       - name: Install Mojo
         run: |
           modular install mojo
-      - name: Run tests
-        run: |
           pip install numpy
+
+      - name: Set path Mojo
+        shell: bash
+        run: |
           echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
           echo "/home/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
 
-          /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo test tests -I .
+      - name: Run tests
+        shell: bash
+        run: |
+          mojo test tests -I .
