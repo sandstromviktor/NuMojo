@@ -31,17 +31,27 @@ jobs:
       - name: Download Modular installer
         run: |
           curl -s https://get.modular.com | sh -
+          
+      - name: Debug PATH
+        run: echo $PATH
 
       - name: Install Mojo
         run: |
           modular install mojo
           pip install numpy
 
+      - name: Verify Mojo installation path
+        run: |
+          find /home/runner/.modular -name mojo -type f
+
       - name: Set path Mojo
         shell: bash
         run: |
           echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
           echo "/home/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
+
+      - name: Debug PATH again
+        run: echo $PATH
 
       - name: Run tests
         shell: bash
