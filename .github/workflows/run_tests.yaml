@@ -37,10 +37,6 @@ jobs:
           modular install mojo
           pip install numpy
 
-      - name: Verify Mojo installation path
-        run: |
-          find /home/runner/.modular -name mojo -type f
-
       - name: Set path Mojo (Mac)
         if: ${{ matrix.os == 'macos-14' }}
         run: |
