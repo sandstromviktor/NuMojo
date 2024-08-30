@@ -35,20 +35,13 @@ jobs:
       - name: Install Mojo
         run: |
           modular install mojo
-          pip install numpy
 
-      - name: Set path Mojo (Mac)
-        if: ${{ matrix.os == 'macos-14' }}
+      - name: Set path Mojo
         run: |
-          echo "MODULAR_HOME=/Users/runner/.modular" >> $GITHUB_ENV
-          echo "/Users/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
-
-      - name: Set path Mojo (Linux)
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
-          echo "/home/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
+          echo "MODULAR_HOME=$HOME/.modular" >> $GITHUB_ENV
+          echo "$HOME/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
 
       - name: Run tests
         run: |
+          pip install numpy
           mojo test tests -I .
