@@ -8,8 +8,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  test-examples:
-    name: with ${{ matrix.os }} and assertions=${{ matrix.mojo-enable-assertions }}
+  testing-numojo:
+    name: with ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -40,4 +40,5 @@ jobs:
 
       - name: Run tests
         run: |
+          pip install numpy
           mojo test tests -I .
