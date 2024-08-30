@@ -32,6 +32,12 @@ jobs:
         run: |
           curl -s https://get.modular.com | sh -
 
+      - name: Activate virtualenv
+        run: |
+        python3 -m venv $HOME/venv/
+        . $HOME/venv/bin/activate
+        echo PATH=$PATH >> $GITHUB_ENV
+
       - name: Install Mojo
         run: |
           modular install mojo
@@ -43,5 +49,5 @@ jobs:
 
       - name: Run tests
         run: |
-          $HOME/.modular/pkg/packages.modular.com_mojo/venv/bin/pip install numpy
+          pip install numpy
           mojo test tests -I .
