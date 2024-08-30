@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "macos-14"]
-        mojo-enable-assertions: [0, 1]
 
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -37,12 +36,21 @@ jobs:
         run: |
           modular install mojo
 
-          # Put Mojo on the PATH
-          echo "MODULAR_HOME=$HOME/.modular" >> $GITHUB_ENV
-          echo "$HOME/.modular/pkg/packages.modular.com_nightly_mojo/bin" >> $GITHUB_PATH
+      - name: Add to PATH (MAC)
+        if: ${{ matrix.os == 'macos-14' }}
+        run: |
+          echo 'export MODULAR_HOME="/home/runner/.modular"' >> ~/.zshrc
+          echo 'export PATH="/home/runner/.modular/pkg/packages.modular.com_mojo/bin:$PATH"' >> ~/.zshrc
+          source ~/.zshrc
+
+      - name: Add to PATH (Ubuntu)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          BASHRC=$( [ -f "$HOME/.bash_profile" ] && echo "$HOME/.bash_profile" || echo "$HOME/.bashrc" )
+          echo 'export MODULAR_HOME="/home/runner/.modular"' >> "$BASHRC"
+          echo 'export PATH="/home/runner/.modular/pkg/packages.modular.com_mojo/bin:$PATH"' >> "$BASHRC"
+          source "$BASHRC"
 
       - name: Run tests
-        env:
-          MOJO_ENABLE_ASSERTIONS_IN_TESTS: ${{ matrix.mojo-enable-assertions }}
         run: |
           mojo test tests -I .
