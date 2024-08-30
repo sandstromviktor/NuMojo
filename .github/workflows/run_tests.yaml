@@ -43,5 +43,5 @@ jobs:
 
       - name: Run tests
         run: |
-          pip install numpy
+          $HOME/.modular/pkg/packages.modular.com_mojo/venv/bin/pip install numpy
           mojo test tests -I .
