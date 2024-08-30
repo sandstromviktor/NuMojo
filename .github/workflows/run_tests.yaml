@@ -31,9 +31,6 @@ jobs:
       - name: Download Modular installer
         run: |
           curl -s https://get.modular.com | sh -
-          
-      - name: Debug PATH
-        run: echo $PATH
 
       - name: Install Mojo
         run: |
@@ -44,16 +41,18 @@ jobs:
         run: |
           find /home/runner/.modular -name mojo -type f
 
-      - name: Set path Mojo
-        shell: bash
+      - name: Set path Mojo (Mac)
+        if: ${{ matrix.os == 'macos-14' }}
+        run: |
+          echo "MODULAR_HOME=/Users/runner/.modular" >> $GITHUB_ENV
+          echo "/Users/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
+
+      - name: Set path Mojo (Linux)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           echo "MODULAR_HOME=/home/runner/.modular" >> $GITHUB_ENV
           echo "/home/runner/.modular/pkg/packages.modular.com_mojo/bin"  >> $GITHUB_PATH
 
-      - name: Debug PATH again
-        run: echo $PATH
-
       - name: Run tests
-        shell: bash
         run: |
           mojo test tests -I .
